@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lista</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <style>
+        td {
+            word-wrap: break-word;
+            min-width: 40px;
+            max-width: 40px;
+
+        }
+
+        .table-responsive {
+            display: table;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col">
+            1 of 3
+        </div>
+
+        <div class="col" id="app">
+            <form>
+                <!-- <ol>
+                <li v-for="lista in listas">
+                    {{lista.nome}}
+                </li>
+            </ol>
+ -->
+                <div class="form-group">
+                    <label for="txtTitulo">Titulo</label>
+                    <input id="txtTitulo" type="text" class="form-control" v-model="item.titulo">
+                </div>
+
+                <div class="form-group">
+                    <label for="txtDescricao">Descrição</label>
+                    <input id="txtDescricao" type="text" class="form-control" v-model="item.descricao">
+                </div>
+
+                <div class="form-group">
+                    <label>Data do Vencimento</label>
+                    <input type="date" class="form-control" v-model="item.dataVencimento">
+                </div>
+
+                <div class="form-group">
+                    <label>Completado?</label>
+                    <input type="checkbox" class="form-control" v-model="item.completado">
+                </div>
+
+
+                <div class="form-group">
+                    <label>Listas</label>
+                    <select v-model="item.lista">
+                        <option v-for="l in listas" v-bind:value="l">
+                            {{l.nome}}
+                        </option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-success" v-on:click="salvar(), novo()">Salvar</button>
+                <button type="button" class="btn" v-on:click="novo">Limpar Form</button>
+
+                <!--        <p>------------</p>
+        <div class="container">
+            <div class="row" v-for="item in itens">
+                <div class="col">
+                    {{item.id}}
+                </div>
+                <div class="col">
+                    {{item.titulo}}
+                </div>
+                <div class="col">
+                    {{item.descricao}}
+                </div>
+                <div class="col">
+                    {{item.dataCriacao}}
+                </div>
+                <div class="col">
+                    {{item.dataVencimento}}
+                </div>
+                <div class="col">
+                    {{item.completado}}
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary" v-on:click="excluir(item)">Excluir</button>
+                    <button type="button" class="btn" v-on:click="alterar(item)">Alterar</button>
+                </div>
+
+            </div>
+
+        </div> -->
+
+                <p>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+                        aria-controls="collapseExample" v-for="lista in listas" v-bind:id="lista.id" v-bind:value="lista" v-on:click="itensEmListaSelecionada(lista)">
+                        {{lista.nome}}
+                    </button>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="row">
+                        <div class="col">
+                            1 of 3
+                        </div>
+                        <div class="col">
+                            <div class="table-reponsive" v-for="item in itens">
+
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">id</th>
+                                            <th scope="col">Titulo</th>
+                                            <th scope="col">Descrição</th>
+                                            <th scope="col">Criado em</th>
+                                            <th scope="col">Vencimento</th>
+                                            <th scope="col">Completado?</th>
+                                            <th scope="col">Ações</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>{{item.id}}</th>
+                                            <td>{{item.titulo}}</td>
+                                            <td>{{item.descricao}}</td>
+                                            <td>{{item.dataCriacao}}</td>
+                                            <td>{{item.dataVencimento}}</td>
+                                            <td>
+                                                <span v-if="item.completado">Sim</span>
+                                                <span v-if="!item.completado">Não</span>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" v-on:click="excluir(item)">Excluir</button>
+                                                <button type="button" class="btn" v-on:click="alterar(item)">Alterar</button>
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+
+                                <!-- <div class="col">
+                                                {{item.id}}
+                                            </div>
+                                            <div class="col">
+                                                {{item.titulo}}
+                                            </div>
+                                            <div class="col">
+                                                {{item.descricao}}
+                                            </div>
+                                            <div class="col">
+                                                {{item.dataCriacao}}
+                                            </div>
+                                            <div class="col">
+                                                {{item.dataVencimento}}
+                                            </div> -->
+                                <!-- <div class="col">
+                                            <span v-if="item.completado == true ? item.completado = 'Sim' : item.completado = 'Nãoo' " ></span>
+                                        </div> -->
+                                <!-- <div class="col">
+                                                <span v-if="item.completado">Sim</span>
+                                                <span v-if="!item.completado">Não</span>
+                
+                                            </div>
+                                            <div class="col">
+                                                <button type="button" class="btn btn-primary" v-on:click="excluir(item)">Excluir</button>
+                                                <button type="button" class="btn" v-on:click="alterar(item)">Alterar</button>
+                                            </div> -->
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            3 of 3
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </form>
+
+            <div id="accordion">
+                <div class="card" v-for="lista in listas">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" v-bind:value="lista" v-on:click="itensEmListaSelecionada(lista)" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="false" aria-controls="collapseOne">
+                                {{lista.nome}}
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,
+                            non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf
+                            moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch
+                            et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                            Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic
+                            synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col">
+                3 of 3
+            </div>
+    </div>
+
+
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    listas: [],
+                    lista: {},
+                    itens: [],
+                    item: {}
+
+                },
+                created: function () {
+                    this.$http.get("http://localhost:8080/listas/").then(function (response) {
+                        this.listas = response.body;
+                    }, function (response) {
+                        console.log("Não funcionou");
+                    })
+
+                    /* this.$http.get("http://localhost:8080/itens/").then(function (response) {
+                        this.itens = response.body;
+                    }, function (response) {
+                        console.log("Não funcionou");
+                    })
+    */
+                },
+
+                methods: {
+                    salvar: function () {
+
+                        if (this.item.id == "") {
+                            //corrigir o date now que vem com um formato numérico irregular que o bd não aceita
+                            var dataCorreta = new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+                            this.item.dataCriacao = dataCorreta;
+                            this.$http.post("http://localhost:8080/itens/item/cadastrar", this.item).then(function (response) { // como é um método post, eu digo quem eu quero mandar com o this.usuario de acordo com o formulário
+                                this.itens.push(response.body);
+
+                            }, function (response) {
+                                console.log("Não funcionou");
+                            })
+                        } else {
+                            this.$http.put("http://localhost:8080/itens/item/editar", this.item).then(function (response) { // como é um método post, eu digo quem eu quero mandar com o this.usuario de acordo com o formulário
+                                var index = this.itens.indexOf(this.itemAlterar);
+                                this.itens.splice(index, 1, response.body); //explicando splice. Quero alterar um cara a partir do index tal, apenas 1, passando esse objeto que vem do formulario(response.body)
+
+                                // this.usuarios[index] = response.body;
+                            }, function (response) {
+                                console.log("Não funcionou");
+                            })
+
+                        }
+
+                    },
+
+
+
+
+                    excluir: function (itemExcluir) {
+                        console.log(itemExcluir);
+                        if (window.confirm("Tem certeza que deseja remover o usuario " + itemExcluir.titulo + "?")) {
+
+
+                            this.$http.delete("http://localhost:8080/itens/item/apagar/" + itemExcluir.id).then(function (response) {
+                                //remover do vetor
+                                var indice = this.itens.indexOf(itemExcluir);
+                                this.itens.splice(indice, 1);
+
+
+                            }, function (response) {
+                                console.log("Não funcionou o delete");
+                            })
+
+                        }
+
+                    },
+
+                    alterar: function (itemAlterar) {
+                        this.itemAlterar = itemAlterar; //funciona pq nesse caso eu estou usando o this. para o escopo do vue, por isso o mesmo nome
+                        this.item = Vue.util.extend({}, itemAlterar);
+                    },
+
+                    novo: function () {
+                        this.item = {
+                            id: '',
+                            titulo: '',
+                            descricao: '',
+                            dataCriacao: '',
+                            dataVencimento: '',
+                            completo: '',
+                            deletado: '',
+                            lista: {
+
+                            }
+                        }
+                    },
+
+                    itensEmListaSelecionada: function (listaSelecionada) {
+
+                        //var teste = JSON.stringify(listaSelecionada);
+                        this.lista = listaSelecionada;
+                        this.$http.get("http://localhost:8080/listas/lista/itens/" + this.lista.id).then(function (response) {
+                            //this.itens = Vue.util.extend({}, response.body); ele faz a cópia, mas não entendi bem, parece que ele faz uma promise
+                            this.itens = response.body;
+                        }, function (response) {
+                            console.log("Não deu certo");
+                        })
+                    }
+
+
+                }
+            });
+        </script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+</body>
+
+</html>
